@@ -4,8 +4,7 @@ Fan::Application.routes.draw do
 
   resources :foods
 
-  root :to => 'order_items#new'
-  get 'result', :to => 'order_items#result'
+  root :to => 'order_items#result'
 
 
   # The priority is based upon order of creation:

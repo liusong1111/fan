@@ -51,7 +51,7 @@
 
     respond_to do |format|
       if @order_item.save
-        format.html { redirect_to "/result", notice: "#{@order_item.user_name}你好，你订#{@order_item.food.name}成功，价格#{@order_item.food.price}元" }
+        format.html { redirect_to "/", notice: "#{@order_item.user_name}你好，你订#{@order_item.food.name}成功，价格#{@order_item.food.price}元" }
         format.json { render json: @order_item, status: :created, location: @order_item }
       else
         format.html { render action: "new" }
@@ -67,7 +67,7 @@
 
     respond_to do |format|
       if @order_item.update_attributes(params[:order_item])
-        format.html { redirect_to "/result", notice: "#{@order_item.user_name}你好，你订#{@order_item.food.name}成功，价格#{@order_item.food.price}元" }
+        format.html { redirect_to "/", notice: "#{@order_item.user_name}你好，你订#{@order_item.food.name}成功，价格#{@order_item.food.price}元" }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
