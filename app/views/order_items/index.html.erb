@@ -1,0 +1,40 @@
+<h1>今日订单 <%= Time.new.strftime("%Y-%m-%d") %></h1>
+<br />
+
+<% if flash[:notice] %>
+<div class="alert alert-success">
+  <%= flash[:notice] %>
+</div>
+<% end %>
+
+<table class="table table-striped table-bordered" style="width: 600px;">
+  <tr>
+    <th>菜品</th>
+    <th>价格</th>
+    <th>人名</th>
+    <th>备注</th>
+    <th></th>
+  </tr>
+
+<% @order_items.each do |order_item| %>
+  <tr>
+    <td><%= order_item.food.name %></td>
+    <td><%= order_item.food.price %></td>
+    <td><%= order_item.user_name %></td>
+    <td><%= order_item.description %></td>
+    <td><%= link_to '修改', edit_order_item_path(order_item) %>
+      <%= link_to '删除', order_item, method: :delete, data: { confirm: '亲，你真的不订了吗?' } %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<h4>
+共<%= @order_items.size %>份饭，<%= @order_items.sum{|order_item| order_item.food.price} %> 元
+</h4>
+
+<br />
+
+<%= link_to '我要订一份...', new_order_item_path, {:class => "btn btn-primary"} %>

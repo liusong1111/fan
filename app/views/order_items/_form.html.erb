@@ -1,0 +1,31 @@
+<%= form_for(@order_item) do |f| %>
+  <% if @order_item.errors.any? %>
+    <div id="error_explanation">
+      <h2>出错啦！ <%= pluralize(@order_item.errors.count, "error") %> prohibited this order_item from being saved:</h2>
+
+      <ul>
+      <% @order_item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_name, "姓名" %>
+    <%= f.text_field :user_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :food_id, "菜品" %>
+    <%= f.select :food_id, @foods.map{|food| ["#{food.name} #{food.price}元", food.id]} %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description, "备注" %>
+    <%= f.text_area :description, {:style => "width:200px;height:100px;"} %>
+  </div>
+  <div class="actions">
+    <%= f.submit "就要这一种了！", {:class => "btn btn-primary"}%>
+  </div>
+<% end %>
