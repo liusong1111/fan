@@ -1,11 +1,14 @@
 Fan::Application.routes.draw do
+  resources :orders
+
+
   resources :order_items
 
 
   resources :foods
 
   root :to => 'order_items#result'
-
+  get '/buy', :to => 'order_items#new'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

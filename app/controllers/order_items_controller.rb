@@ -1,7 +1,7 @@
 ﻿class OrderItemsController < ApplicationController
   # GET /order_items
   # GET /order_items.json
-  def index
+  def all
     @order_items = OrderItem.all
 
     respond_to do |format|
@@ -11,7 +11,8 @@
   end
 
   def result
-    @order_items = OrderItem.where("created_at > ?", Time.new.beginning_of_day).order(:food_id).all
+    @order = Order.current
+    @order_items = @order.order_items.order("created_at DESC").all
     render :index
   end
 
@@ -29,6 +30,7 @@
   # GET /order_items/new
   # GET /order_items/new.json
   def new
+    @order = Order.current
     @order_item = OrderItem.new
     @foods = Food.all
 
@@ -47,7 +49,9 @@
   # POST /order_items
   # POST /order_items.json
   def create
+    order = Order.current
     @order_item = OrderItem.new(params[:order_item])
+    @order_item.order = order
 
     respond_to do |format|
       if @order_item.save
@@ -83,7 +87,7 @@
     @order_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to order_items_url }
+      format.html { redirect_to "/" }
       format.json { head :no_content }
     end
   end
