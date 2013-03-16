@@ -16,6 +16,14 @@
     render :index
   end
 
+  def history
+    if params[:order_name] == Time.new.strftime("%Y-%m-%d")
+      redirect_to '/' and return
+    end
+    @order = Order.where(name: params[:order_name]).first
+    @order_items = @order.order_items if @order
+  end
+
   # GET /order_items/1
   # GET /order_items/1.json
   def show

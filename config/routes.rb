@@ -10,6 +10,8 @@ Fan::Application.routes.draw do
   root :to => 'order_items#result'
   get '/buy', :to => 'order_items#new'
 
+  get ':order_name', :to => 'order_items#history', :constraints => /\d{4}-\d{2}-\d{2}/
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

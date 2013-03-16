@@ -1,0 +1,53 @@
+<h1><a href="/" title="回到首页"><i class="icon-home icon-large"></i></a> 历史订单 <%= params[:order_name] %> </h1>
+<br />
+
+
+
+<% if @order_items.blank? %>
+    <div class="alert alert-danger">
+      <strong>这天没有订单</strong>
+    </div>
+<% else %>
+    <div class="alert alert-danger">
+      <strong>该订单已过期</strong>
+    </div>
+
+    <div class="alert">
+      历史公告：<br />
+      <pre>
+      <%=  @order.description %>
+      </pre>
+    </div>
+    <table class="table table-striped table-bordered" style="width: 600px;">
+      <tr>
+        <th>姓名</th>
+        <th>菜品</th>
+        <th>价格</th>
+        <th>备注</th>
+      </tr>
+
+      <% @order_items.each do |order_item| %>
+          <tr>
+            <td><%= order_item.user_name %></td>
+            <td><%= order_item.food.name %>
+            </td>
+            <td><%= order_item.food.price %></td>
+            <td><%= order_item.description %></td>
+          </tr>
+      <% end %>
+    </table>
+
+    <div class="alert alert-info" style="display:inline-block;margin:8px;padding: 8px;border:1px solid #f0f0f0;">
+      <p style="font-size: 14px;">统计</p>
+      <ul>
+        <% @order_items.group_by{|order_item| order_item.food.name}.each do |food_name, order_items| %>
+            <li><%= food_name %> <span class="badge badge-success"><%= order_items.size %></span></li>
+        <% end %>
+      </ul>
+      <div style="font-size: 1.1em;margin-top: 8px;padding-top: 4px;border-top:1px solid #ccc;">
+        共<strong><%= @order_items.size %></strong>份饭，<strong><%= @order_items.sum{|order_item| order_item.food.price} %></strong> 元
+      </div>
+    </div>
+<% end %>
+
+
