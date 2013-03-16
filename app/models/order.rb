@@ -3,9 +3,9 @@ class Order < ActiveRecord::Base
   has_many :order_items
 
   def self.current
-    order = Order.order("created_at DESC").first
+    order_name = Time.new.strftime('%Y-%m-%d')
+    order = Order.where(name: order_name).first
     if order.blank?
-      order_name = Time.new.strftime("%Y-%m-%d")
       order = Order.create(name: order_name, status: 'ready')
     end
 
