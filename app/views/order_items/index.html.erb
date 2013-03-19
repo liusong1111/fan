@@ -27,8 +27,6 @@
   <% end %>
 </div>
 
-
-
 <table class="table table-striped table-bordered" style="width: 600px;">
   <tr>
     <th>姓名</th>
@@ -60,7 +58,8 @@
 <% end %>
 </ul>
 <div style="font-size: 1.1em;margin-top: 8px;padding-top: 4px;border-top:1px solid #ccc;">
-共<strong><%= @order_items.size %></strong>份饭，<strong><%= @order_items.sum{|order_item| order_item.food.price} %></strong> 元
+共<strong><%= @order_items.size %></strong>份饭，<strong><%= @order_items.sum{|order_item| order_item.food.price} %></strong> 元，
+  订餐电话：130 0224 2671 或 152 2271 4819
 </div>
 </div>
 
