@@ -1,4 +1,4 @@
-class OrdersController < ApplicationController
+﻿class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
@@ -60,7 +60,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.update_attributes(params[:order])
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+        format.html { redirect_to "/", notice: '成功更新订单' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

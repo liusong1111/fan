@@ -1,29 +1,40 @@
 <h1>今日订单 <%= Time.new.strftime("%Y-%m-%d") %> </h1>
 <br />
 
-<script>
-  function updateOrderDescription() {
-      var description = $("#order_description").val();
-      $(".updateOrderDescriptionIcon").removeClass("icon-ok").addClass("icon-spinner icon-spin");
-      $.post("/orders/<%= @order.id%>.json", {_method: 'put', order:{description: description}}, function() {
-          $(".updateOrderDescriptionIcon").addClass("icon-ok").removeClass("icon-spinner icon-spin");
-      });
-  }
-</script>
-
-<%= link_to raw('<i class="icon-plus icon-large"></i> 我要订一份...'), buy_path, {:class => "btn btn-primary"} %>
-
 <% if flash[:notice] %>
-<div class="alert alert-success">
-  <strong><%= flash[:notice] %></strong>
+    <div class="alert alert-success">
+      <strong><%= flash[:notice] %></strong>
+    </div>
+<% end %>
+
+<% if @order.status == "ready" %>
+<div id="orderButton">
+<%= link_to raw('<i class="icon-plus icon-large"></i> 我要订一份...'), buy_path, {:class => "btn btn-primary"} %>
+</div>
+<% else %>
+<div id="orderStoppedTip" class="alert alert-danger">
+  <strong>到时间了，截止订饭啦！</strong>
 </div>
 <% end %>
 
+<br />
+
 <div class="alert">
-  今日公告：
-  <%= form_for(@order) do |f| %>
+  今日公告：<br />
+  <%= form_for(@order, {:html => {:style => 'display:inline'} }) do |f| %>
         <%= f.text_area :description, {:style => "width:300px;height:60px;"} %> <br />
-        <%= f.button raw('<i class="updateOrderDescriptionIcon icon-ok icon-large"></i> 更新公告'), {:class => "btn", :onclick => 'updateOrderDescription();return false'}%>
+        <%= f.button raw('<i class="icon-ok icon-large"></i> 更新公告'), {:class => "btn"}%>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <% end %>
+
+  <%= form_for(@order, {:html => {:style => 'display:inline'} }) do |f| %>
+  <% if @order.status == "ready"  %>
+      <%= f.hidden_field :status, value: "stop" %>
+      <%= f.button raw('<i class="icon-pause icon-large"></i> 准备下单，不接受再订饭的了'), {:class => "btn btn-danger #{@order.status}", :confirm =>"亲，真的锁定订单吗？"}%>
+  <% else %>
+          <%= f.hidden_field :status, value: "ready" %>
+      订单已截止。<%= f.button raw('<i class="icon-play icon-large"></i> 把订单恢复成继续接受订饭的状态'), {:class => "btn #{@order.status}", :confirm => "亲，真的重新开放订单吗？"}%>
+  <% end %>
   <% end %>
 </div>
 
