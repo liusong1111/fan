@@ -54,8 +54,11 @@
     </td>
     <td><%= order_item.food.price %></td>
     <td><%= order_item.description %></td>
-    <td><%= link_to raw('<i class="icon-pencil"></i> 修改'), edit_order_item_path(order_item) %> &nbsp;
-      <%= link_to raw('<i class="icon-trash"></i> 删除'), order_item, method: :delete, data: { confirm: "hi，#{order_item.user_name}，你真的不订了吗?" } %>
+    <td>
+      <% if @order.status == "ready"  %>
+          <%= link_to raw('<i class="icon-pencil"></i> 修改'), edit_order_item_path(order_item) %> &nbsp;
+          <%= link_to raw('<i class="icon-trash"></i> 删除'), order_item, method: :delete, data: { confirm: "hi，#{order_item.user_name}，你真的不订了吗?" } %>
+      <% end %>
     </td>
   </tr>
 <% end %>

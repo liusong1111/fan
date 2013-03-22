@@ -58,6 +58,11 @@
   # POST /order_items.json
   def create
     order = Order.current
+    if order.status != "ready"
+      redirect_to "/", notice: "这次订餐失败，订单已经锁定，开始下单了"
+      return
+    end
+
     @order_item = OrderItem.new(params[:order_item])
     @order_item.order = order
 
@@ -77,6 +82,12 @@
   def update
     @order_item = OrderItem.find(params[:id])
 
+    order = @order_item.order
+    if order.status != "ready"
+      redirect_to "/", notice: "#{@order_item.user_name}你好，更新订单失败，订单已经锁定，开始下单了"
+      return
+    end
+
     respond_to do |format|
       if @order_item.update_attributes(params[:order_item])
         format.html { redirect_to "/", notice: "#{@order_item.user_name}你好，你订#{@order_item.food.name}成功，价格#{@order_item.food.price}元" }
@@ -92,6 +103,12 @@
   # DELETE /order_items/1.json
   def destroy
     @order_item = OrderItem.find(params[:id])
+    order = @order_item.order
+    if order.status != "ready"
+      redirect_to "/", notice: "#{@order_item.user_name}你好，更新订单失败，订单已经锁定，开始下单了"
+      return
+    end
+
     @order_item.destroy
 
     respond_to do |format|
